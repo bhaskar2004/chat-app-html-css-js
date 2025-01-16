@@ -3,10 +3,19 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, {
     cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
+        origin: process.env.NODE_ENV === 'production' 
+            ? ['https://your-netlify-app.netlify.app']  // Replace with your Netlify URL
+            : ['http://localhost:3000'],
+        methods: ["GET", "POST"],
+        credentials: true
     }
 });
+
+const cors = require('cors');
+
+// Enable CORS
+app.use(cors());
+
 
 const path = require('path');
 const PORT = process.env.PORT || 3000;
