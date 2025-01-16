@@ -1,7 +1,7 @@
 class ChatApp {
     constructor() {
         this.messages = new Map(); // Store messages by conversation
-        this.socket = io('http://localhost:3000');
+        this.socket = io('https://chat-app-html-css-js.onrender.com');
         this.currentUser = null;
         this.currentUserProfile = null;
         this.currentRecipient = null;
