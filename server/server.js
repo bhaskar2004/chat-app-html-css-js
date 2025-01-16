@@ -4,7 +4,7 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http, {
     cors: {
         origin: process.env.NODE_ENV === 'production' 
-            ? ['https://your-netlify-app.netlify.app']  // Replace with your Netlify URL
+            ? ['https://cloud77.netlify.app/']  
             : ['http://localhost:3000'],
         methods: ["GET", "POST"],
         credentials: true
