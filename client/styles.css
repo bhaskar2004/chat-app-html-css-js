@@ -77,35 +77,66 @@ body {
 }
 /* Add these styles to your CSS file */
 
-/* Make the users list scrollable */
+/* First, ensure the profile sidebar takes full height */
+.profile-sidebar {
+    width: 320px;
+    height: 100%; /* Make sure it takes full height */
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-primary);
+    border-right: 1px solid var(--border-color);
+}
+
+/* Fix the chat sidebar to take remaining space */
+.chat-sidebar {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0; /* This is crucial for nested flex scrolling */
+}
+
+/* Adjust the users list container */
 .users-list-container {
-    height: calc(100vh - 250px); /* Adjust based on your header/other elements */
+    flex: 1;
     overflow-y: auto;
-    padding-right: 8px;
+    min-height: 0; /* Required for Firefox */
 }
 
+/* Style the users list itself */
 .users-list {
-    height: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
 }
 
-/* Custom scrollbar styling */
+/* Custom scrollbar for better visibility */
 .users-list-container::-webkit-scrollbar {
     width: 6px;
 }
 
 .users-list-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: var(--bg-primary);
 }
 
 .users-list-container::-webkit-scrollbar-thumb {
-    background: #888;
+    background: var(--text-secondary);
     border-radius: 3px;
 }
 
 .users-list-container::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: var(--text-primary);
 }
 
+/* Ensure proper spacing for user items */
+.user-item {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--border-color);
+}
 /* Typing indicator animation */
 .typing-indicator {
     display: none;
