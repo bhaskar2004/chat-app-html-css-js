@@ -117,6 +117,13 @@ class ChatApp {
         };
     
         // Rest of the code remains the same...
+        this.loadMessagesFromStorage();
+
+        document.getElementById('loginContainer').style.display = 'none';
+        document.getElementById('chatContainer').style.display = 'flex';
+
+        this.updateCurrentUserProfile();
+    
     
 
         this.currentUser = userId;
@@ -255,9 +262,14 @@ class ChatApp {
             chatMessages.innerHTML = '';
             const conversationKey = this.getConversationKey(this.currentUser, this.currentRecipient);
             const messages = this.messages.get(conversationKey) || [];
-            messages.forEach(msg => this.addMessageToChat(msg, 
-                msg.senderId === this.currentUser ? 'sent' : 'received'));
+            // messages.forEach(msg => this.addMessageToChat(msg, 
+            //     msg.senderId === this.currentUser ? 'sent' : 'received'));
+                messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            
+                messages.forEach(msg => {
+                    this.addMessageToChat(msg, msg.senderId === this.currentUser ? 'sent' : 'received');
         }
+      )}
 
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.querySelector('#messageForm button');
@@ -294,11 +306,20 @@ class ChatApp {
             if (!this.messages.has(conversationKey)) {
                 this.messages.set(conversationKey, []);
             }
-            this.messages.get(conversationKey).push(messageData);
-
+            const conversationMessages = this.messages.get(conversationKey);
+            conversationMessages.push(messageData);
+            
+            // Emit the message
             this.socket.emit('privateMessage', messageData);
+            
+            // Add message to chat and persist it
             this.addMessageToChat(messageData, 'sent');
+            
+            // Clear input
             messageInput.value = '';
+            
+            // Save to localStorage
+            this.saveMessagesToStorage();
         }
     }
 
@@ -308,7 +329,11 @@ class ChatApp {
         if (!this.messages.has(conversationKey)) {
             this.messages.set(conversationKey, []);
         }
-        this.messages.get(conversationKey).push(data);
+        const conversationMessages = this.messages.get(conversationKey);
+        conversationMessages.push(data);
+        
+        // Save to localStorage
+        this.saveMessagesToStorage();
 
         // Only show message if we're currently chatting with the sender
         if (data.senderId === this.currentRecipient) {
@@ -350,6 +375,22 @@ class ChatApp {
         
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    saveMessagesToStorage() {
+        const messagesObject = {};
+        for (const [key, value] of this.messages.entries()) {
+            messagesObject[key] = value;
+        }
+        localStorage.setItem('chatMessages', JSON.stringify(messagesObject));
+    }
+
+    loadMessagesFromStorage() {
+        const savedMessages = localStorage.getItem('chatMessages');
+        if (savedMessages) {
+            const messagesObject = JSON.parse(savedMessages);
+            this.messages = new Map(Object.entries(messagesObject));
+        }
     }
 
     handleTyping() {
