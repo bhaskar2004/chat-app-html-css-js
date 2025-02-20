@@ -75,6 +75,95 @@ body {
     font-size: 15px;
     color: var(--text-primary);
 }
+/* Add these styles to your CSS file */
+
+/* Make the users list scrollable */
+.users-list-container {
+    height: calc(100vh - 250px); /* Adjust based on your header/other elements */
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.users-list {
+    height: 100%;
+}
+
+/* Custom scrollbar styling */
+.users-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.users-list-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.users-list-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.users-list-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Typing indicator animation */
+.typing-indicator {
+    display: none;
+    padding: 10px;
+    margin: 10px;
+    background: #f0f0f0;
+    border-radius: 20px;
+    width: fit-content;
+}
+
+.typing-bubble {
+    display: inline-flex;
+    gap: 4px;
+    margin-right: 8px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: #90949c;
+    border-radius: 50%;
+    animation: typingAnimation 1.4s infinite;
+    display: inline-block;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typingAnimation {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-4px);
+    }
+}
+
+/* For dark theme compatibility */
+[data-theme='dark'] .typing-indicator {
+    background: #2a2a2a;
+}
+
+[data-theme='dark'] .users-list-container::-webkit-scrollbar-track {
+    background: #2a2a2a;
+}
+
+[data-theme='dark'] .users-list-container::-webkit-scrollbar-thumb {
+    background: #666;
+}
+
+[data-theme='dark'] .users-list-container::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
 
 .form-group input,
 .form-group textarea {
